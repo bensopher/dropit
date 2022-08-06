@@ -1,0 +1,37 @@
+{
+    "timeslots": [
+        {
+            "startTime": "08:00",
+            "endTime": "10:00",
+            "supportedAddresses": [
+                {
+                    "street": "West 53rd Street",
+                    "line1": "200 West 53rd Street",
+                    "line2": "New York, NY 10019, United States of America",
+                    "country": "United States",
+                    "postcode": "10019"
+                }
+            ]
+        },
+        {
+            "startTime": "10:00",
+            "endTime": "12:00",
+            "supportedAddresses": []
+        },
+        {
+            "startTime": "12:00",
+            "endTime": "14:00",
+            "supportedAddresses": []
+        },
+        {
+            "startTime": "16:00",
+            "endTime": "18:00",
+            "supportedAddresses": []
+        },
+        {
+            "startTime": "18:00",
+            "endTime": "20:00",
+            "supportedAddresses": []
+        }
+    ]
+}
