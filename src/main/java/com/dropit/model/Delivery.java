@@ -1,13 +1,17 @@
 package com.dropit.model;
 
+import com.dropit.DTO.TimeslotDTO;
 import com.dropit.enums.DeliveryStatus;
 
 public class Delivery {
     private Long id;
     private DeliveryStatus status;
-    private Timeslot timeslot;
+    private TimeslotDTO timeslot;
 
-    public Delivery(DeliveryStatus status, Timeslot timeslot) {
+    public Delivery(){}
+
+    public Delivery(Long id, DeliveryStatus status, TimeslotDTO timeslot) {
+        this.id = id;
         this.status = status;
         this.timeslot = timeslot;
     }
@@ -20,15 +24,19 @@ public class Delivery {
         this.status = status;
     }
 
-    public Timeslot getTimeslot() {
+    public TimeslotDTO getTimeslot() {
         return timeslot;
     }
 
-    public void setTimeslot(Timeslot timeslot) {
+    public void setTimeslot(TimeslotDTO timeslot) {
         this.timeslot = timeslot;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

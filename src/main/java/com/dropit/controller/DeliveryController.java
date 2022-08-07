@@ -1,16 +1,17 @@
 package com.dropit.controller;
 
-import com.dropit.model.Address;
-import com.dropit.model.AddressRequest;
-import com.dropit.model.Timeslot;
-import com.dropit.model.TimeslotRequest;
+import com.dropit.DTO.TimeslotDTO;
+import com.dropit.model.*;
 import com.dropit.service.AddressService;
+import com.dropit.service.DeliveryService;
 import com.dropit.service.TimeslotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,14 +21,17 @@ public class DeliveryController {
     private final AddressService addressService;
     private final TimeslotService timeslotService;
 
-    public DeliveryController(AddressService addressService, TimeslotService timeslotService) {
+    private final DeliveryService deliveryService;
+
+    public DeliveryController(AddressService addressService, TimeslotService timeslotService, DeliveryService deliveryService) {
         this.addressService = addressService;
         this.timeslotService = timeslotService;
+        this.deliveryService = deliveryService;
     }
 
     @PostMapping(path = "/resolve-address")
     public ResponseEntity<? extends Object> resolveAddress(@RequestBody AddressRequest address) {
-        Address resolvedAddress = new Address();
+        Address resolvedAddress;
         try {
             resolvedAddress = addressService.resolveAddress(address);
         } catch (Exception e) {
@@ -38,7 +42,7 @@ public class DeliveryController {
 
     @PostMapping(path = "/timeslots")
     public ResponseEntity<? extends Object> getAvailableTimeslots(@RequestBody TimeslotRequest formattedAddress) {
-        List<Timeslot> availableTimeslots = new ArrayList<>();
+        List<TimeslotDTO> availableTimeslots;
         try {
             availableTimeslots = timeslotService.getAvailableTimeslots(formattedAddress.address());
         } catch (Exception e) {
@@ -48,13 +52,13 @@ public class DeliveryController {
     }
 
     @PostMapping(path = "/deliveries")
-    public ResponseEntity<? extends Object> bookDelivery(@RequestBody AddressRequest address) {
-        Address resolvedAddress = new Address();
+    public ResponseEntity<? extends Object> bookDelivery(@RequestBody DeliveryRequest deliveryRequest) {
+        Delivery delivery;
         try {
-            resolvedAddress = addressService.resolveAddress(address);
+            delivery = deliveryService.bookDelivery(deliveryRequest);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(resolvedAddress, HttpStatus.CREATED);
+        return new ResponseEntity<>(delivery, HttpStatus.CREATED);
     }
 }

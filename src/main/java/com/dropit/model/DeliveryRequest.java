@@ -1,4 +1,4 @@
 package com.dropit.model;
 
-public record DeliveryRequest(User user, Long timeslotID) {
+public record DeliveryRequest(User user, Long timeslotId) {
 }

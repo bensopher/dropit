@@ -9,8 +9,9 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import java.time.LocalTime;
 import java.util.List;
 
-@JsonPropertyOrder({"startTime, endTime, supportedAddresses"})
+@JsonPropertyOrder({"id, startTime, endTime, supportedAddresses"})
 public class Timeslot {
+    private Long id;
     @JsonSerialize(using = LocalTimeSerializer.class)
     @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime startTime;
@@ -49,5 +50,13 @@ public class Timeslot {
 
     public void setSupportedAddresses(List<Address> supportedAddresses) {
         this.supportedAddresses = supportedAddresses;
+    }
+
+    private void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

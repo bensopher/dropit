@@ -1,5 +1,6 @@
 package com.dropit.service;
 
+import com.dropit.DTO.TimeslotDTO;
 import com.dropit.model.Address;
 import com.dropit.model.Timeslot;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,14 +21,14 @@ public class TimeslotService implements InitializingBean {
 
     private List<Timeslot> availableTimeslots;
 
-    public List<Timeslot> getAvailableTimeslots(Address formattedAddress) {
+    public List<TimeslotDTO> getAvailableTimeslots(Address formattedAddress) {
         if (formattedAddress == null || isNotValid(formattedAddress)) throw new NullPointerException("request body is invalid!");
-        List<Timeslot> results = new ArrayList<>();
+        List<TimeslotDTO> results = new ArrayList<>();
         for(Timeslot timeslot : availableTimeslots) {
             List<Address> supportedAddresses = timeslot.getSupportedAddresses();
             for(Address address : supportedAddresses) {
                 if (address.equals(formattedAddress)) {
-                    results.add(timeslot);
+                    results.add(TimeslotDTO.toDTO(timeslot));
                 }
             }
         }
@@ -60,5 +61,9 @@ public class TimeslotService implements InitializingBean {
                 || formattedAddress.getPostcode() == null
                 || formattedAddress.getLine1() == null
                 || formattedAddress.getLine2() == null;
+    }
+
+    public List<Timeslot> getAvailableTimeslots() {
+        return availableTimeslots;
     }
 }

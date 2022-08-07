@@ -3,10 +3,8 @@ package com.dropit.service;
 import com.dropit.model.Address;
 import com.dropit.model.AddressRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
@@ -26,9 +24,6 @@ public class AddressService {
     private String API_KEY;
 
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     public Address resolveAddress(AddressRequest address) throws IOException, InterruptedException {
         if (address.searchTerm() == null) throw new NullPointerException("request body is invalid!");
