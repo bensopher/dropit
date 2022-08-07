@@ -7,10 +7,7 @@ import com.dropit.service.DeliveryService;
 import com.dropit.service.TimeslotService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -61,4 +58,27 @@ public class DeliveryController {
         }
         return new ResponseEntity<>(delivery, HttpStatus.CREATED);
     }
+
+    @PostMapping(path = "/deliveries/{deliveryId}/complete")
+    public ResponseEntity<? extends Object> updateDeliveryStatus(@PathVariable Long deliveryId) {
+        Delivery delivery;
+        try {
+            delivery = deliveryService.updateDeliveryStatus(deliveryId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(delivery, HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping(path = "/deliveries/{deliveryId}")
+    public ResponseEntity<? extends Object> cancelDelivery(@PathVariable Long deliveryId) {
+        Delivery delivery;
+        try {
+            delivery = deliveryService.cancelDelivery(deliveryId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(delivery, HttpStatus.ACCEPTED);
+    }
+
 }

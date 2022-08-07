@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicLong;
 public class DeliveryService {
     private static AtomicLong deliveryId = new AtomicLong(1);
 
-    private final int MAX_DELIVERY_PER_TIMESLOT = 2;
-    private final int MAX_DELIVERY_PER_DAY = 10;
-    private TimeslotService timeslotService;
+    private static final int MAX_DELIVERY_PER_TIMESLOT = 2;
+    private static final int MAX_DELIVERY_PER_DAY = 10;
+    private final TimeslotService timeslotService;
 
     private List<Delivery> allDeliveries;
 
@@ -50,5 +50,27 @@ public class DeliveryService {
 
     public List<Delivery> getAllDeliveries() {
         return this.allDeliveries;
+    }
+
+    public Delivery updateDeliveryStatus(Long deliveryId) {
+        for (Delivery d : allDeliveries) {
+            if (d.getId() == deliveryId) {
+                d.setStatus(DeliveryStatus.COMPLETED);
+                return d;
+            }
+        }
+        throw new RuntimeException("No such delivery in deliveries!");
+    }
+
+    public Delivery cancelDelivery(Long deliveryId) {
+        List<Delivery> tempDeliveries = allDeliveries;
+        for (Delivery d : tempDeliveries) {
+            if (d.getId() == deliveryId) {
+                d.setStatus(DeliveryStatus.CANCELED);
+                allDeliveries.removeIf(delivery -> delivery.getId() == d.getId());
+                return d;
+            }
+        }
+        throw new RuntimeException("No such delivery in deliveries!");
     }
 }
