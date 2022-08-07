@@ -31,6 +31,7 @@ public class AddressService {
     private RestTemplate restTemplate;
 
     public Address resolveAddress(AddressRequest address) throws IOException, InterruptedException {
+        if (address.searchTerm() == null) throw new NullPointerException("request body is invalid!");
         String queryParams = UriUtils.encodeQuery(address.searchTerm(), StandardCharsets.UTF_8);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()

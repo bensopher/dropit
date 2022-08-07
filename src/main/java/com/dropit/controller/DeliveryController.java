@@ -26,34 +26,34 @@ public class DeliveryController {
     }
 
     @PostMapping(path = "/resolve-address")
-    public ResponseEntity<Address> resolveAddress(@RequestBody AddressRequest address) {
+    public ResponseEntity<? extends Object> resolveAddress(@RequestBody AddressRequest address) {
         Address resolvedAddress = new Address();
         try {
             resolvedAddress = addressService.resolveAddress(address);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(resolvedAddress, HttpStatus.CREATED);
     }
 
-    @GetMapping(path = "/timeslots")
-    public ResponseEntity<List<Timeslot>> getAvailableTimeslots(@RequestBody TimeslotRequest formattedAddress) {
+    @PostMapping(path = "/timeslots")
+    public ResponseEntity<? extends Object> getAvailableTimeslots(@RequestBody TimeslotRequest formattedAddress) {
         List<Timeslot> availableTimeslots = new ArrayList<>();
         try {
             availableTimeslots = timeslotService.getAvailableTimeslots(formattedAddress.address());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(availableTimeslots, HttpStatus.OK);
     }
 
     @PostMapping(path = "/deliveries")
-    public ResponseEntity<Address> bookDelivery(@RequestBody AddressRequest address) {
+    public ResponseEntity<? extends Object> bookDelivery(@RequestBody AddressRequest address) {
         Address resolvedAddress = new Address();
         try {
             resolvedAddress = addressService.resolveAddress(address);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(resolvedAddress, HttpStatus.CREATED);
     }

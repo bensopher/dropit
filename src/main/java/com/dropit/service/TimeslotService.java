@@ -21,6 +21,7 @@ public class TimeslotService implements InitializingBean {
     private List<Timeslot> availableTimeslots;
 
     public List<Timeslot> getAvailableTimeslots(Address formattedAddress) {
+        if (formattedAddress == null || isNotValid(formattedAddress)) throw new NullPointerException("request body is invalid!");
         List<Timeslot> results = new ArrayList<>();
         for(Timeslot timeslot : availableTimeslots) {
             List<Address> supportedAddresses = timeslot.getSupportedAddresses();
@@ -51,5 +52,13 @@ public class TimeslotService implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
+    }
+
+    public boolean isNotValid(Address formattedAddress) {
+        return formattedAddress.getCountry() == null
+                || formattedAddress.getStreet() == null
+                || formattedAddress.getPostcode() == null
+                || formattedAddress.getLine1() == null
+                || formattedAddress.getLine2() == null;
     }
 }
