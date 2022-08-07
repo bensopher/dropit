@@ -81,4 +81,15 @@ public class DeliveryController {
         return new ResponseEntity<>(delivery, HttpStatus.ACCEPTED);
     }
 
+    @GetMapping(path = "/deliveries/daily")
+    public ResponseEntity<? extends Object> cancelDelivery() {
+        List<Delivery> deliveries;
+        try {
+            deliveries = deliveryService.getAllDeliveries();
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(deliveries, HttpStatus.ACCEPTED);
+    }
+
 }
